@@ -66,7 +66,6 @@ function test_input($data) {
     <link rel="stylesheet" href="style-register.css"/>
     <link href="https://fonts.googleapis.com/css2?family=Belgrano&display=swap" rel="stylesheet">
   </head>
-  <body>
     <body>
   
         <div class="navbar">        
@@ -81,15 +80,15 @@ function test_input($data) {
 
         <div class="register">
         <b>Username</b><br>
-        <input type="text" placeholder="Enter Username" required><br>
+        <input type="text" name="name" placeholder="Enter Username" required><br>
         <br>
         <b>Password<b><br>
-        <input type="password" placeholder="Enter Password" required><br>
+        <input type="password" name="heslo" placeholder="Enter Password" required><br>
         <br>
         <b>Password Check</b><br>
         <input type="password" placeholder="Enter Password Again" required><br>
         <br>
-        <button>Register</button>
+        <input type="submit" name="submit" value="Register"></input>
         </div>
       
         <div class="downbar">
@@ -101,7 +100,41 @@ function test_input($data) {
           <a class="downbar1" href="../Maturita/sports.html">Sport</a>
           <br><br><br>
         </div>
-      </body>
     </html>
   </body>
 </html>
+
+<?php 
+require_once "databaza.php";
+// Initialize the session
+session_start();
+
+
+if(isset($_POST['submit']  )){
+  if( $heslo != $heslo2){
+    echo "ERROR: Nezmenili hodnoty v databaze";
+  }else{
+
+
+    // Attempt insert query execution
+    $name = $_POST['name'];
+    $heslo = $_POST['heslo'];
+
+    $sql = "INSERT INTO users(meno, heslo) VALUES ('" .$name. "','" .$heslo. "')";
+        if(mysqli_query($link, $sql)){
+            echo "Records added successfully.";
+        } else{
+            echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
+        }
+
+    header('location: index.html');
+
+
+  }
+  
+    
+}
+
+
+
+?>
