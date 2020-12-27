@@ -59,6 +59,7 @@ function test_input($data) {
   return $data;
 }
 ?>
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -67,7 +68,6 @@ function test_input($data) {
     <link href="https://fonts.googleapis.com/css2?family=Belgrano&display=swap" rel="stylesheet">
   </head>
     <body>
-  
         <div class="navbar">        
           <div class="stranky_bez_drpdwn">
                 <a href="./index.html">HOME</a>
@@ -78,28 +78,34 @@ function test_input($data) {
           </div>
         </div>
 
-        <div class="register">
-        <b>Username</b><br>
-        <input type="text" name="name" placeholder="Enter Username" required><br>
-        <br>
-        <b>Password<b><br>
-        <input type="password" name="heslo" placeholder="Enter Password" required><br>
-        <br>
-        <b>Password Check</b><br>
-        <input type="password" placeholder="Enter Password Again" required><br>
-        <br>
-        <input type="submit" name="submit" value="Register"></input>
+          <div class="register">
+           <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">  
+              <b>Username</b><br>
+              <input type="text" name="name" value="<?php echo $name;?>" required>
+              <br>
+              <b>Password<b><br>
+              <input type="password" name="heslo" value="<?php echo $heslo;?>" required>
+              <br>
+              <b>Password Check</b><br>
+              <input type="password" placeholder="Enter Password Again" required><br>
+              <br>
+              <input type="submit" name="submit" value="Register"></input>
+              </div>
+            </form>
+
+          
         </div>
-      
         <div class="downbar">
-          <br>
-          <br><a class="downbar3"><b>Info</b></a>
-          <a class="downbar4"><b>Catgories</b></a><br>
-          <a class="downbar1" href="../Maturita/books.html">Books</a> <a class="downbar5"><b>Email: </b>admin123@gmail.com</a><br>
-          <a class="downbar1" href="../Maturita/movies.html">Movies</a> <a class="downbar2"><b>Phone: </b>+421 940 999 666</a><br>
-          <a class="downbar1" href="../Maturita/sports.html">Sport</a>
-          <br><br><br>
-        </div>
+              <br>
+              <br><a class="downbar3"><b>Info</b></a>
+              <a class="downbar4"><b>Catgories</b></a><br>
+              <a class="downbar1" href="../Maturita/books.html">Books</a> <a class="downbar5"><b>Email: </b>admin123@gmail.com</a><br>
+              <a class="downbar1" href="../Maturita/movies.html">Movies</a> <a class="downbar2"><b>Phone: </b>+421 940 999 666</a><br>
+              <a class="downbar1" href="../Maturita/sports.html">Sport</a>
+              <br><br><br>
+            </div>
+
+
     </html>
   </body>
 </html>
@@ -111,11 +117,6 @@ session_start();
 
 
 if(isset($_POST['submit']  )){
-  if( $heslo != $heslo2){
-    echo "ERROR: Nezmenili hodnoty v databaze";
-  }else{
-
-
     // Attempt insert query execution
     $name = $_POST['name'];
     $heslo = $_POST['heslo'];
@@ -128,13 +129,5 @@ if(isset($_POST['submit']  )){
         }
 
     header('location: index.html');
-
-
-  }
-  
-    
 }
-
-
-
 ?>
