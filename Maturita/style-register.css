@@ -1,0 +1,133 @@
+body{
+    background-image: url(../Maturita/Photo1.jpg);
+    margin: 0 0 0 0;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+  }
+  
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  
+  .navbar {
+    overflow: hidden;
+    background-color: #333;
+  
+  }
+  
+  .navbar a {
+    float: left;
+    font-size: 16px;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+  
+
+  .menu-centered a {
+    font-family: 'Belgrano', serif;
+    color: palevioletred;
+    font-size: 30px;
+    float: none;
+    position: absolute;
+    top: 2.2%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    margin-top: 10px;
+  }
+
+  
+  .stranky_bez_drpdwn :hover{
+    background-color: grey;
+  }
+
+  .centered1 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 30px;
+    color: white;
+  }
+  .centered2   {
+    position: absolute;
+    top: 65%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 30px;
+    color: white;
+  }
+  .centered3   {
+    position: absolute;
+    top: 90%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 30px;
+    color: white;
+  }
+  
+  .downbar{
+    overflow: hidden;
+    background-color: #333;
+    margin-top: 50%;
+  }
+  .downbar1{
+    font-family: 'Arial';
+    font-size: 14px;
+    left: 8%;
+    text-decoration: none;
+    position: relative;
+    color: #b5a78d;
+  }
+  .downbar2{
+    font-family: 'Arial';
+    font-size: 14px;
+    left: 66%;
+    position: relative;
+    color: white;
+  }
+  .downbar2 b{
+    color: #b5a78d;
+  }
+  .downbar3{
+    left: 70%;
+    position: relative;
+    color: white;
+    font-size: 18px;
+  }
+  .downbar4{
+    position: relative;
+    color: white;
+    font-size: 18px;
+    left: 5%;
+  }
+  .downbar5{
+    font-family: 'Arial';
+    font-size: 14px;
+    left: 66.5%;
+    position: relative;
+    color: white;
+  }
+  .downbar5 b{
+    color: #b5a78d;
+  }
+
+.register{
+    border: 0.5px solid black;
+    border-radius: 5px;
+    position: absolute;
+    left: 40%;
+    right: 40%;
+    background-color: whitesmoke;
+    margin-top: 15%;
+    padding-left: 10px;
+    padding-top: 10px;
+}
+.register button{
+  position: relative;
+  margin-left: 33.3%;
+  margin-bottom: 10px;
+  border: 1px solid black;
+}

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Blog Page</title>
+    <link rel="stylesheet" href="style.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Belgrano&display=swap" rel="stylesheet">
+  </head>
+  <body>
+  
+    <div class="navbar">
+      <div class="dropdown">
+        <button class="dropbtn">MENU 
+          <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
+          <a href="../Maturita/books.html">Books</a>
+          <a href="../Maturita/movies.html">Movies</a>
+          <a href="../Maturita/sports.html">Sport</a>
+        </div>
+      </div> 
+      
+      <div class="stranky_bez_drpdwn">
+        <a href="#home">HOME</a>
+     </div>
+      
+      <div class="menu-centered">
+        <a >BLOG PAGE</a>
+      </div>
+   
+      <div class="menu-right">
+        <a href="#" onclick="document.getElementById('id01').style.display='block'" style="width:auto;">LOGIN</a>
+        <a href="../Maturita/register.html">REGISTER</a>
+      </div>
+    </div>
+    
+    <div class="container">
+      <img src="../Maturita/Photo1.jpg">
+      <div class="centered1"><b>CHOOSE</b></div>
+      <div class="centered2"><b>YOUR TOPIC</b></div>
+      <div class="centered3"><b>&darr;</b></div>
+    </div>
+
+    <div class="vyber">
+      <a class="fade" href= "../Maturita/books.html"> <img src="../Maturita/knihy2.jfif"></a>
+      <a class="fade" href= "../Maturita/movies.html"> <img src="../Maturita/movies.jfif"></a>
+      <a class="fade" href="../Maturita/sports.html"> <img src="../Maturita/sports.jfif"></a>
+    </div>
+
+    <div class="downbar">
+      <br>
+      <br><a class="downbar3"><b>Info</b></a>
+      <a class="downbar4"><b>Catgories</b></a><br>
+      <a class="downbar1" href="../Maturita/books.html">Books</a> <a class="downbar5"><b>Email: </b>admin123@gmail.com</a><br>
+      <a class="downbar1" href="../Maturita/movies.html">Movies</a> <a class="downbar2"><b>Phone: </b>+421 940 999 666</a><br>
+      <a class="downbar1" href="../Maturita/sports.html">Sport</a>
+      <br><br><br>
+    </div>
+
+    <div id="id01" class="modal">
+  
+      <form class="modal-content animate" action="/action_page.php" method="post">
+    
+        <div class="login">
+          <label for="uname"><b>Username</b></label>
+          <input type="text" placeholder="Enter Username" name="uname" required>
+    
+          <label for="psw"><b>Password</b></label>
+          <input type="password" placeholder="Enter Password" name="psw" required>
+            
+          <button type="submit">Login</button>
+        </div> 
+      </form>
+    </div>
+    
+    <script>
+    // Get the modal
+    var modal = document.getElementById('id01');
+    
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+    </script>
+    
+  </body>
+</html>
