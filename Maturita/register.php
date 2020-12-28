@@ -1,62 +1,95 @@
 <?php
-// define variables and set to empty values
-$nameErr = $emailErr = $genderErr = $websiteErr = $hesloErr = $heslo2Err = "";
-$name = $email = $gender = $comment = $website = $heslo = $heslo2 =    "";
+// Include config file
+require_once "databaza.php";
+ 
+// Define variables and initialize with empty values
+$username = $password = $confirm_password = "";
+$username_err = $password_err = $confirm_password_err = "";
+ 
+// Processing form data when form is submitted
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+ 
+    // Validate username
+    if(empty(trim($_POST["username"]))){
+        $username_err = "Please enter a username.";
+    } else{
+        // Prepare a select statement
+        $sql = "SELECT id FROM formular WHERE meno = ?";
+        
+        if($stmt = mysqli_prepare($link, $sql)){
+            // Bind variables to the prepared statement as parameters
+            mysqli_stmt_bind_param($stmt, "s", $param_username);
+            
+            // Set parameters
+            $param_username = trim($_POST["username"]);
+            
+            // Attempt to execute the prepared statement
+            if(mysqli_stmt_execute($stmt)){
+                /* store result */
+                mysqli_stmt_store_result($stmt);
+                
+                if(mysqli_stmt_num_rows($stmt) == 1){
+                    $username_err = "This username is already taken.";
+                } else{
+                    $username = trim($_POST["username"]);
+                }
+            } else{
+                echo "Oops! Something went wrong. Please try again later.";
+            }
 
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  if (empty($_POST["name"])) {
-    $nameErr = "Zadajte meno!";
-  } else {
-    $name = test_input($_POST["name"]);
-    // check if name only contains letters and whitespace
-    if (!preg_match("/^[a-zA-Z-' ]*$/",$name)) {
-      $nameErr = "Iba písmena a medzery sú dovolene!";
+            // Close statement
+            mysqli_stmt_close($stmt);
+        }
     }
-  }
-  if (empty($_POST["heslo"])) {
-    $hesloErr = "Zadajte heslo!";
-  } else {
-    $heslo = test_input($_POST["heslo"]);
-  }
-  if (empty($_POST["heslo2"])) {
-    $heslo2Err = "Zadajte heslo!";
-  } else {
-    $heslo2 = test_input($_POST["heslo2"]);
-  }if ($heslo2 != $heslo){
-    $heslo2Err = "Nesprávne heslo ";
-
-  }
-  
-  if (empty($_POST["email"])) {
-    $emailErr = "Zadajte email!";
-  } else {
-    $email = test_input($_POST["email"]);
-    // check if e-mail address is well-formed
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-      $emailErr = "Nesprávný formát!";
+    
+    // Validate password
+    if(empty(trim($_POST["password"]))){
+        $password_err = "Please enter a password.";     
+    } elseif(strlen(trim($_POST["password"])) < 6){
+        $password_err = "Password must have atleast 6 characters.";
+    } else{
+        $password = trim($_POST["password"]);
     }
-  }
+    
+    // Validate confirm password
+    if(empty(trim($_POST["confirm_password"]))){
+        $confirm_password_err = "Please confirm password.";     
+    } else{
+        $confirm_password = trim($_POST["confirm_password"]);
+        if(empty($password_err) && ($password != $confirm_password)){
+            $confirm_password_err = "Password did not match.";
+        }
+    }
+    
+    // Check input errors before inserting in database
+    if(empty($username_err) && empty($password_err) && empty($confirm_password_err)){
+        
+        // Prepare an insert statement
+        $sql = "INSERT INTO formular (meno, heslo) VALUES('" . $username . "', '" . password_hash($password, PASSWORD_DEFAULT) . "')";
+         
+        if($stmt = mysqli_prepare($link, $sql)){
+            // Bind variables to the prepared statement as parameters
+            mysqli_stmt_bind_param($stmt, "ss", $param_username, $password);
+            
+            // Set parameters
+            $param_username = $username;
+            $param_password = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
+            
+            // Attempt to execute the prepared statement
+            if(mysqli_stmt_execute($stmt)){
+                // Redirect to login page
+                header("location: index.php");
+            } else{
+                echo "Something went wrong. Please try again later.";
+            }
 
-
-  if (empty($_POST["comment"])) {
-    $comment = "";
-  } else {
-    $comment = test_input($_POST["comment"]);
-  }
-
-  if (empty($_POST["gender"])) {
-    $genderErr = "Potrebujet vybrať pohlavie";
-  } else {
-    $gender = test_input($_POST["gender"]);
-  }
-}
-
-function test_input($data) {
-  $data = trim($data);
-  $data = stripslashes($data);
-  $data = htmlspecialchars($data);
-  return $data;
+            // Close statement
+            mysqli_stmt_close($stmt);
+        }
+    }
+    
+    // Close connection
+    mysqli_close($link);
 }
 ?>
 
@@ -70,31 +103,42 @@ function test_input($data) {
     <body>
         <div class="navbar">        
           <div class="stranky_bez_drpdwn">
-                <a href="./index.html">HOME</a>
+                <a href="./index.php">HOME</a>
          </div>
           
           <div class="menu-centered">
-                <a >BLOG PAGE</a>
+                <a href="index.php">BLOG PAGE</a>
           </div>
         </div>
 
           <div class="register">
-           <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">  
-              <b>Username</b><br>
-              <input type="text" name="name" value="<?php echo $name;?>" required>
-              <br>
-              <b>Password<b><br>
-              <input type="password" name="heslo" value="<?php echo $heslo;?>" required>
-              <br>
-              <b>Password Check</b><br>
-              <input type="password" placeholder="Enter Password Again" required><br>
-              <br>
-              <input type="submit" name="submit" value="Register"></input>
+           <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">  
+                <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
+                      <label>Username</label>
+                      <input type="text" name="username" class="form-control" value="<?php echo $username; ?>">
+                      <span class="help-block"><?php echo $username_err; ?></span>
+                  </div>    
+                  <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
+                      <label>Password</label>
+                      <input type="password" name="password" class="form-control" value="<?php echo $password; ?>">
+                      <span class="help-block"><?php echo $password_err; ?></span>
+                  </div>
+                  <div class="form-group <?php echo (!empty($confirm_password_err)) ? 'has-error' : ''; ?>">
+                      <label>Confirm Password</label>
+                      <input type="password" name="confirm_password" class="form-control" value="<?php echo $confirm_password; ?>">
+                      <span class="help-block"><?php echo $confirm_password_err; ?></span>
+                  </div>
+                  <div class="form-group">
+                      <input type="submit" class="btn btn-primary" value="Submit">
+                      <input type="reset" class="btn btn-default" value="Reset">
+                  </div>
               </div>
             </form>
 
           
         </div>
+
+
         <div class="downbar">
               <br>
               <br><a class="downbar3"><b>Info</b></a>
@@ -103,7 +147,7 @@ function test_input($data) {
               <a class="downbar1" href="../Maturita/movies.html">Movies</a> <a class="downbar2"><b>Phone: </b>+421 940 999 666</a><br>
               <a class="downbar1" href="../Maturita/sports.html">Sport</a>
               <br><br><br>
-            </div>
+          </div>
 
 
     </html>
@@ -121,7 +165,7 @@ if(isset($_POST['submit']  )){
     $name = $_POST['name'];
     $heslo = $_POST['heslo'];
 
-    $sql = "INSERT INTO users(meno, heslo) VALUES ('" .$name. "','" .$heslo. "')";
+    $sql = "INSERT INTO formular(meno, heslo) VALUES ('" .$name. "','" .$heslo. "')";
         if(mysqli_query($link, $sql)){
             echo "Records added successfully.";
         } else{
